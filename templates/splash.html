@@ -2,11 +2,23 @@
 
 {% block header %}
 <div class="nav-wrapper blue darken-4">
-<a href="#" class="brand-logo">Airspace Status</a>
+	<a href="#" class="center brand-logo"><i class="material-icons">airplanemode_active</i> Airspace Status</a>
+    <ul class="right hide-on-med-and-down">
+		<li><a href="https://www.fly.faa.gov/ois/">Full FAA Info</a></li>
+	</ul>
 </div>
 {% endblock %}
 
 {% block body %}
 <div id="appFrame">
 </div>	
+
+<footer class="page-footer white lighten-1">
+	<div class="center">
+		<span class="grey-text">
+			<small>Data: <a class="grey-text" href="https://github.com/Federal-Aviation-Administration/ASWS/">FAA ASWS</a> &bull; <a class="grey-text" href="https://github.com/nhfruchter/faa-ois-site">GitHub</a>
+			</small>	
+		</span>
+	</div>
+</footer>	
 {% endblock %}
