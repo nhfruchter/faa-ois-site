@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify
 import faadata
+import mockdata
 
 app = Flask(__name__)
 
@@ -9,8 +10,8 @@ def splash():
 
 @app.route("/app.html")
 def appPage():
-	# data = faadata.fetch()
-	data = faadata.mock()
+	data = faadata.fetch()
+	# data = mockdata.mock(empty=False) # Testing data.	
 	return render_template("data.html", data=data)
 
 @app.route("/api")

@@ -1,3 +1,19 @@
+{% if data.total == 0 %}
+<div class="row center">
+	<div class="col s12">
+		<div class="container">
+			<img src="{{url_for('static', filename='images/happy.png')}}" style="max-width: 256px" />	
+			<p>No issues reported by air traffic control!</p>
+			<a class="waves-effect waves-light btn" href="https://www.fly.faa.gov/flyfaa/usmap.jsp"> 
+				Check with the FAA
+			</a>
+			
+		</div>	
+	</div>
+</div>	
+{% endif %}
+
+
 
 {% if data.groundDelays.n %}
 {% for d in data.groundDelays['items'] %}
