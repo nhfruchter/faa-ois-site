@@ -6,14 +6,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def splash():	
-	return render_template("splash.html")
-
-@app.route("/app.html")
-def appPage():
-	data = faadata.fetch()
-	# data = mockdata.mock(empty=False) # Testing data.	
-	return render_template("data.html", data=data)
-
+	return render_template("splash.html", data=faadata.fetch())
+	
 @app.route("/api")
 def api():
 	return jsonify(faadata.fetch())

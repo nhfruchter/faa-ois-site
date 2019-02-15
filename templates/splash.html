@@ -10,12 +10,175 @@
 {% endblock %}
 
 {% block body %}
-<div id="appFrame">
-	<div class="center">
-		<h2>Loading...</h2>
+{% if data.total == 0 %}
+<div class="row center">
+	<div class="col s12">
+		<div class="container">
+			<img src="{{url_for('static', filename='images/happy.png')}}" style="max-width: 256px" />	
+			<p>No issues reported by air traffic control!</p>
+			<a class="waves-effect waves-light btn" href="https://www.fly.faa.gov/flyfaa/usmap.jsp"> 
+				Check with the FAA
+			</a>
+			
+		</div>	
 	</div>
-	<br />	
 </div>	
+{% endif %}
+
+
+
+{% if data.groundDelays.n %}
+{% for d in data.groundDelays['items'] %}
+<div class="row">
+	<div class="col s12">
+	  <div class="card blue-grey darken-1">
+	    <div class="card-content white-text">
+			<span class="card-title activator"><strong>{{d.airport}}</strong> Ground Delay<i class="material-icons right">more_vert</i></span>
+			 <p class="avg-delay"><i class="material-icons left">access_time</i> Avg. of <strong>{{d.avgTime}}</strong></p>
+			 <br />
+			 <p class="reason"><i class="material-icons left">warning</i> Why: {{d.parsedReason}}</p>
+	    </div>
+		<div class="card-reveal">
+	        <span class="card-title grey-text text-darken-4">Ground Delay<i class="material-icons right">close</i></span>			
+			<p>You should expect delays before boarding or takeoff.</p>
+			{% if d.parsedExplanation %}
+			<ul class="collection">
+				{% for exp in d.parsedExplanation %}
+				<li class="collection-item"><i class="material-icons left">info</i> {{exp}}</li>
+				{% endfor %}
+			</ul>	
+			{% endif %}
+			<div class="card-action">
+				<a href="https://www.fly.faa.gov/flyfaa/AirportLookup.jsp?q={{d.airport}}&go=1" class="blue-text darken-2">
+					Delay Details from FAA
+				</a>
+				{% if d.mosaic %}
+				<a href="http://www.airportviewer.com/airport/{{d.mosaic}}">
+					Runway Traffic (Live Map)
+				</a>
+				{% endif %}
+			</div>	
+		</div>	
+	  </div>
+	</div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if data.arriveDepart.n %}
+{% for d in data.arriveDepart['items'] %}
+<div class="row">
+	<div class="col s12">
+	  <div class="card orange darken-2">
+	    <div class="card-content white-text">
+			<span class="card-title activator"><strong>{{d.airport}}</strong> Enroute Delay<i class="material-icons right">more_vert</i></span>
+			 <p class="avg-delay"><i class="material-icons left">access_time</i> From <strong>{{d.minTime}}</strong> to <strong>{{d.maxTime}}</strong></p>
+			 <br />
+			 <p class="reason"><i class="material-icons left">warning</i> Why: {{d.parsedReason}}</p>
+	    </div>
+		<div class="card-reveal">
+	        <span class="card-title grey-text text-darken-4">Enroute Delay<i class="material-icons right">close</i></span>			
+			<p>You should expect a longer wait while taxiing to takeoff, or to wait in a holding pattern if you're airborne.</p>
+			{% if d.parsedExplanation %}
+			<ul class="collection">
+				{% for exp in d.parsedExplanation %}
+				<li class="collection-item"><i class="material-icons left">info</i> {{exp}}</li>
+				{% endfor %}
+			</ul>	
+			{% endif %}
+			<div class="card-action">
+				<a href="https://www.fly.faa.gov/flyfaa/AirportLookup.jsp?q={{d.airport}}&go=1" class="blue-text darken-2">
+					Delay Details from FAA
+				</a>
+				{% if d.mosaic %}
+				<a href="http://www.airportviewer.com/airport/{{d.mosaic}}">
+					Runway Traffic (Live Map)
+				</a>
+				{% endif %}
+			</div>	
+		</div>	
+	  </div>
+	</div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if not data.groundStops.n %}
+{% for d in data.groundStops['items'] %}
+<div class="row">
+	<div class="col s12">
+	  <div class="card blue-grey darken-1">
+	    <div class="card-content white-text">
+			<span class="card-title activator"><strong>{{d.airport}}</strong> Ground Stop<i class="material-icons right">more_vert</i></span>
+			 <p class="avg-delay"><i class="material-icons left">access_time</i> End time: <strong>{{d.endTime}}</strong></p>
+			 <br />
+			 <p class="reason"><i class="material-icons left">warning</i> Why: {{d.parsedReason}}</p>
+	    </div>
+		<div class="card-reveal">
+	        <span class="card-title grey-text text-darken-4">Ground Stop<i class="material-icons right">close</i></span>			
+			<p>Air traffic control has temporarily stopped activity at this airport.</p>
+			{% if d.parsedExplanation %}
+			<ul class="collection">
+				{% for exp in d.parsedExplanation %}
+				<li class="collection-item"><i class="material-icons left">info</i> {{exp}}</li>
+				{% endfor %}
+			</ul>	
+			{% endif %}
+			<div class="card-action">
+				<a href="https://www.fly.faa.gov/flyfaa/AirportLookup.jsp?q={{d.airport}}&go=1" class="blue-text darken-2">
+					Delay Details from FAA
+				</a>
+				{% if d.mosaic %}
+				<a href="http://www.airportviewer.com/airport/{{d.mosaic}}">
+					Runway Traffic (Live Map)
+				</a>
+				{% endif %}
+			</div>	
+		</div>	
+	  </div>
+	</div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if  data.closures.n %}
+{% for d in data.closures['items'] %}
+<div class="row">
+	<div class="col s12">
+	  <div class="card red darken-1">
+	    <div class="card-content white-text">
+			<span class="card-title activator"><strong>{{d.airport}}</strong> Is Closed<i class="material-icons right">more_vert</i></span>
+			 <p class="avg-delay"><i class="material-icons left">access_time</i> Reopens: <strong>{{d.endTime}}</strong></p>
+			 <br />
+			 <p class="reason"><i class="material-icons left">warning</i> Why: {{d.parsedReason}}</p>
+	    </div>
+		<div class="card-reveal">
+	        <span class="card-title grey-text text-darken-4">Closure<i class="material-icons right">close</i></span>			
+			<p>This airport is closed for safety or security reasons.</p>
+			{% if d.parsedExplanation %}
+			<ul class="collection">
+				{% for exp in d.parsedExplanation %}
+				<li class="collection-item"><i class="material-icons left">info</i> {{exp}}</li>
+				{% endfor %}
+			</ul>	
+			{% endif %}
+
+			<div class="card-action">
+				<a href="https://www.fly.faa.gov/flyfaa/AirportLookup.jsp?q={{d.airport}}&go=1" class="blue-text darken-2">
+					FAA Closure Info
+				</a>
+				{% if d.mosaic %}
+				<a href="http://www.airportviewer.com/airport/{{d.mosaic}}">
+					Runway Traffic (Live Map)
+				</a>
+				{% endif %}
+			</div>	
+		</div>	
+	  </div>
+	</div>
+</div>
+{% endfor %}
+{% endif %}
 
 <footer class="page-footer white lighten-1">
 	<div class="center">

@@ -22,7 +22,6 @@ var filesToCache = [
  "./images/icons/icon-192x192.png",
  "./images/icons/icon-256x256.png",
  "./images/icons/icon-512x512.png",
- "./index.html",
  "./manifest.json",
  "./scripts",
  "./scripts/app.js",
@@ -31,7 +30,6 @@ var filesToCache = [
  "./service-worker.js",
  "./styles",
  "./styles/materialize.css",
- "./styles/style.css"
 ];
 
 self.addEventListener('install', function(e) {
