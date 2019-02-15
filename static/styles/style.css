@@ -1,0 +1,10 @@
+.card {
+  margin: 0.75em;
+}
+.card-description {
+	font-style: italic;
+	line-height: 0.9;
+}
+.card-title {
+	font-weight: bold;
+}
