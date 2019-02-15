@@ -1,0 +1,6 @@
+A site that tells you about the National Airspace Status in the US. It uses the FAA's [ASWS API](https://github.com/Federal-Aviation-Administration/ASWS/) to get status information.
+
+Icons used:
+
+* Airplane art by [Flatart](https://www.iconfinder.com/icons/4171260/airplane_airport_day_fly_love_plane_valentine_valentines_icon)
+* Airplane icon by [Nick Roach](https://www.iconfinder.com/icons/1055008/airplane_plane_transportation_icon), licensed under the GPL.
