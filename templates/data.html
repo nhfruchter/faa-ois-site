@@ -22,7 +22,7 @@
 	  <div class="card blue-grey darken-1">
 	    <div class="card-content white-text">
 			<span class="card-title activator"><strong>{{d.airport}}</strong> Ground Delay<i class="material-icons right">more_vert</i></span>
-			 <p class="avg-delay"><i class="material-icons left">access_time</i> Avg. delay: <strong>{{d.avgTime}}</strong></p>
+			 <p class="avg-delay"><i class="material-icons left">access_time</i> Avg. of <strong>{{d.avgTime}}</strong></p>
 			 <br />
 			 <p class="reason"><i class="material-icons left">warning</i> Why: {{d.parsedReason}}</p>
 	    </div>
@@ -32,12 +32,19 @@
 			{% if d.parsedExplanation %}
 			<ul class="collection">
 				{% for exp in d.parsedExplanation %}
-				<li class="collection-item">{{exp}}</li>
+				<li class="collection-item"><i class="material-icons left">info</i> {{exp}}</li>
 				{% endfor %}
 			</ul>	
 			{% endif %}
 			<div class="card-action">
-				<a href="https://fly.faa.gov/ois/">FAA Technical Info</a>
+				<a href="https://www.fly.faa.gov/flyfaa/AirportLookup.jsp?q={{d.airport}}&go=1" class="blue-text darken-2">
+					Delay Details from FAA
+				</a>
+				{% if d.mosaic %}
+				<a href="http://www.airportviewer.com/airport/{{d.mosaic}}">
+					Runway Traffic (Live Map)
+				</a>
+				{% endif %}
 			</div>	
 		</div>	
 	  </div>
@@ -53,7 +60,7 @@
 	  <div class="card orange darken-2">
 	    <div class="card-content white-text">
 			<span class="card-title activator"><strong>{{d.airport}}</strong> Enroute Delay<i class="material-icons right">more_vert</i></span>
-			 <p class="avg-delay"><i class="material-icons left">access_time</i> Avg. delay: <strong>{{d.minTime}} - {{d.maxTime}}</strong></p>
+			 <p class="avg-delay"><i class="material-icons left">access_time</i> From <strong>{{d.minTime}}</strong> to <strong>{{d.maxTime}}</strong></p>
 			 <br />
 			 <p class="reason"><i class="material-icons left">warning</i> Why: {{d.parsedReason}}</p>
 	    </div>
@@ -63,12 +70,19 @@
 			{% if d.parsedExplanation %}
 			<ul class="collection">
 				{% for exp in d.parsedExplanation %}
-				<li class="collection-item">{{exp}}</li>
+				<li class="collection-item"><i class="material-icons left">info</i> {{exp}}</li>
 				{% endfor %}
 			</ul>	
 			{% endif %}
 			<div class="card-action">
-				<a href="https://fly.faa.gov/ois/">FAA Technical Info</a>
+				<a href="https://www.fly.faa.gov/flyfaa/AirportLookup.jsp?q={{d.airport}}&go=1" class="blue-text darken-2">
+					Delay Details from FAA
+				</a>
+				{% if d.mosaic %}
+				<a href="http://www.airportviewer.com/airport/{{d.mosaic}}">
+					Runway Traffic (Live Map)
+				</a>
+				{% endif %}
 			</div>	
 		</div>	
 	  </div>
@@ -94,12 +108,19 @@
 			{% if d.parsedExplanation %}
 			<ul class="collection">
 				{% for exp in d.parsedExplanation %}
-				<li class="collection-item">{{exp}}</li>
+				<li class="collection-item"><i class="material-icons left">info</i> {{exp}}</li>
 				{% endfor %}
 			</ul>	
 			{% endif %}
 			<div class="card-action">
-				<a href="https://fly.faa.gov/ois/">FAA Technical Info</a>
+				<a href="https://www.fly.faa.gov/flyfaa/AirportLookup.jsp?q={{d.airport}}&go=1" class="blue-text darken-2">
+					Delay Details from FAA
+				</a>
+				{% if d.mosaic %}
+				<a href="http://www.airportviewer.com/airport/{{d.mosaic}}">
+					Runway Traffic (Live Map)
+				</a>
+				{% endif %}
 			</div>	
 		</div>	
 	  </div>
@@ -125,13 +146,20 @@
 			{% if d.parsedExplanation %}
 			<ul class="collection">
 				{% for exp in d.parsedExplanation %}
-				<li class="collection-item">{{exp}}</li>
+				<li class="collection-item"><i class="material-icons left">info</i> {{exp}}</li>
 				{% endfor %}
 			</ul>	
 			{% endif %}
 
 			<div class="card-action">
-				<a href="https://fly.faa.gov/ois/">FAA Technical Info</a>
+				<a href="https://www.fly.faa.gov/flyfaa/AirportLookup.jsp?q={{d.airport}}&go=1" class="blue-text darken-2">
+					FAA Closure Info
+				</a>
+				{% if d.mosaic %}
+				<a href="http://www.airportviewer.com/airport/{{d.mosaic}}">
+					Runway Traffic (Live Map)
+				</a>
+				{% endif %}
 			</div>	
 		</div>	
 	  </div>

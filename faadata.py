@@ -3,6 +3,22 @@ from datetime import datetime
 
 ENDPOINT = "https://soa.smext.faa.gov/asws/api/airport/delays"
 
+def hasMosaicATM(iata):
+	SUPPORTED = ['ATL', 'BWI', 'DCA', 'DTW', 'HNL', 'IAH', 'LAX', 'MDW', 'MKE', 'PHL', 'SAN', 'SFO',
+	 			 'STL', 'BDL', 'CLE', 'DEN', 'EWR', 'HOU', 'JFK', 'LGA', 'MEM', 'MSP', 'PHX', 'SDF',
+				 'SLC', 'BOS', 'CLT', 'DFW', 'FLL', 'IAD', 'LAS', 'MCO', 'MIA', 'ORD', 'PVD', 'SEA',
+				 'SNA']
+	
+	
+	iata = iata.upper()
+	if iata == "HNL":
+		return "PHNL"
+	else:
+		if iata in SUPPORTED:
+			return "K{0}".format(iata)
+		else:
+			return False				
+
 def fetch():
 	"""Fetch data from FAA airport status web service and package for site."""
 	
@@ -39,14 +55,16 @@ def parseFAA(data):
 	if nGroundDelays: 
 		for gd in data['GroundDelays']['groundDelay']:
 			gd['parsedReason'], gd['parsedExplanation'] = parseReason(gd['reason'])
+			gd['mosaic'] = hasMosaicATM(gd['airport'])
 			output['groundDelays']['items'].append(gd)
-
+			
 	# Ground stops
 	nGroundStops = data['GroundStops']['count']
 	output['groundStops'] = {'n': nGroundStops, 'items': [] }
-	if nGroundDelays: 
+	if nGroundStops: 
 		for gs in data['GroundStops']['groundStop']:
 			gs['parsedReason'], gs['parsedExplanation'] = parseReason(gs['reason'])
+			gs['mosaic'] = hasMosaicATM(gs['airport'])
 			output['groundStops']['items'].append(gs)
 		
 	# Arr/dep delays		
@@ -55,6 +73,7 @@ def parseFAA(data):
 	if nADDelays: 
 		for ad in data['ArriveDepartDelays']['arriveDepart']:
 			ad['parsedReason'], ad['parsedExplanation'] = parseReason(ad['reason'])
+			ad['mosaic'] = hasMosaicATM(ad['airport'])			
 			output['arriveDepart']['items'].append(ad)
 			
 	# Closures
@@ -63,7 +82,9 @@ def parseFAA(data):
 	if nClosures: 
 		for cl in data['Closures']['closure']:
 			cl['parsedReason'], cl['parsedExplanation'] = parseReason(cl['reason'])
+			cl['mosaic'] = hasMosaicATM(cl['airport'])
 			output['closures']['items'].append(cl)
+			
 	
 	return output
 			
@@ -81,7 +102,8 @@ def parseReason(reason):
 		'thunder': "Aircraft cannot arrive or depart through certain types of thunderstorms, so they will often cause delays.",
 		'swap': "There's severe weather in the area that can't be flown through, so this may cause delays in the airspace nearby.",
 		'tm': "Air traffic control has changed normal traffic patterns to manage changes in the airspace.",
-		'construction': "Air traffic control is working around construction at the airport."
+		'construction': "Air traffic control is working around construction at the airport.",
+		'mt': "Airport runways and taxiways can get congested just like busy roads at rush hour."
 	}
 	
 	reason = reason.upper()
@@ -101,10 +123,14 @@ def parseReason(reason):
 	reason = reason.replace("INITIATIVES", "")
 	reason = reason.replace("SWAP", "Severe weather avoidance")
 	reason = reason.replace("CONSTRUCTION", "Construction")
-	if "VOL" in reason: explanations.append(exps['vol'])
-	reason = reason.replace("VOL", "Aircraft volume")
+	if "VOL" in reason: 
+		explanations.append(exps['vol'])
+		reason = reason.replace("UME", "")
+	reason = reason.replace("VOL ", "Aircraft volume ")
 	reason = reason.replace("VOLUME", "Aircraft volume")
 	reason = reason.replace("MULTITAXI", "High volume of taxiing aircraft")
+	reason = reason.replace("MULTI TAXI", "High volume of taxiing aircraft")
+	reason = reason.replace("MULTI-TAXI", "High volume of taxiing aircraft")
 	
 	# Weather explanations
 	reason = reason.replace("LOW CEILINGS", "Low Ceilings")
@@ -120,7 +146,7 @@ def parseReason(reason):
 	if "Thunder" in reason: explanations.append(exps['thunder'])
 	if "Severe" in reason: explanations.append(exps['swap'])
 	if "Construction" in reason: explanations.append(exps['construction'])
-	
+	if "taxiing" in reason: explanations.append(exps['mt'])
 	return reason,explanations
 
 
